@@ -4,56 +4,79 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.inventivetalent.packetlistenerapi</groupId>
-    <artifactId>parent</artifactId>
-    <packaging>pom</packaging>
-    <version>parent</version>
-    <modules>
-        <module>API</module>
-        <module>Plugin</module>
-    </modules>
-    <name>PacketListenerAPI</name>
+    <groupId>me.tvhee</groupId>
+    <artifactId>SimplePackets</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.0</version>
 
     <properties>
-        <pl.version>3.9.9-SNAPSHOT</pl.version>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.8-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.0.25.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.tvhee</groupId>
+            <artifactId>SimpleReflection</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
     <build>
-        <finalName>PacketListenerAPI_v${pl.version}</finalName>
-        <sourceDirectory>src</sourceDirectory>
-        <!--<outputDirectory>target</outputDirectory>-->
-        <resources>
-            <resource>
-                <directory>src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>plugin.yml</include>
-                    <include>config.yml</include>
-                </includes>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
                 <version>3.8.1</version>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <source>${java.version}</source>
+                            <target>${java.version}</target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>default-testCompile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <configuration>
+                            <source>${java.version}</source>
+                            <target>${java.version}</target>
+                        </configuration>
+                    </execution>
+                </executions>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <verbose>true</verbose>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.2</version>
+                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-shade-plugin -->
+                <version>3.3.0-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -61,62 +84,18 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <artifactSet>
-                                <includes>
-                                    <include>org.inventivetalent.packetlistenerapi:**</include>
-                                    <include>org.inventivetalent:reflectionhelper**</include>
-                                    <include>org.inventivetalent:apimanager**</include>
-                                    <include>org.inventivetalent.spiget-update:bukkit**</include>
-                                </includes>
-                            </artifactSet>
-                            <relocations>
-                                <relocation>
-                                    <pattern>org.inventivetalent.reflection</pattern>
-                                    <shadedPattern>org.inventivetalent.packetlistener.reflection</shadedPattern>
-                                </relocation>
-                            </relocations>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
-    <distributionManagement>
-        <repository>
-            <id>sonatype-nexus-releases</id>
-            <url>https://repo.inventivetalent.org/content/repositories/releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <url>https://repo.inventivetalent.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 
-
-    <repositories>
-        <repository>
-            <id>inventive-repo</id>
-            <url>https://repo.inventivetalent.org/repository/public/</url>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
-            <id>md_5-repo</id>
-            <url>http://repo.md-5.net/content/repositories/public/</url>
-        </repository>
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>mojang</id>
-            <url>https://libraries.minecraft.net/</url>
-        </repository>
-    </repositories>
 </project>

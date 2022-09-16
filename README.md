@@ -46,3 +46,6 @@ public class MyPacketHandler extends PacketHandler
 ```
 simplePackets.registerHandler(new MyPacketHandler());
 ```
+
+## Important
+1. Do not forget to install `SimpleReflection`: https://github.com/Tvhee-Dev/SimpleReflection. This library depends on it!

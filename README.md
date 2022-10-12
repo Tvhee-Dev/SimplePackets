@@ -2,11 +2,11 @@
 
 ## Usage
 1. To start using packets, create a new field in your plugin's main
-```
+```java
 private final SimplePackets simplePackets = new SimplePackets();
 ```
 2. Implement these methods in onLoad, onEnable and onDisable:
-```
+```java
 @Override
 pubic void onLoad()
 {
@@ -26,7 +26,7 @@ pubic void onDisable()
 }
 ```
 3. Create a new class extending `PacketHandler`
-```
+```java
 public class MyPacketHandler extends PacketHandler
 {
         @Override
@@ -43,7 +43,7 @@ public class MyPacketHandler extends PacketHandler
 }
 ```
 4. Register your class in onEnable
-```
+```java
 simplePackets.registerHandler(new MyPacketHandler());
 ```
 
